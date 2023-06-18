@@ -20,7 +20,8 @@ $routes = [];
 $usersRoutes = include BASE_PATH . '/app/routes/users.php';
 $productsRoutes = include BASE_PATH . '/app/routes/product.php';
 $productTypeRoutes = include BASE_PATH . '/app/routes/productType.php';
-$routes = array_merge($routes, $usersRoutes,$productsRoutes,$productTypeRoutes);
+$productTaxRoutes = include BASE_PATH . '/app/routes/productTax.php';
+$routes = array_merge($routes, $usersRoutes,$productsRoutes,$productTypeRoutes, $productTaxRoutes);
 
 if (array_key_exists($routePath, $routes)) {
     include BASE_PATH . '/' . $routes[$routePath];

@@ -45,26 +45,20 @@ class AuthMiddleware
         try {
             $decodedPayload = $this->jwt->verifyAccessToken($token);
             
-            // Extrair o ID do usuário do payload
             $userId = $decodedPayload['user_id'];
             
-            // Conectar ao banco de dados
             $db = (new Database())->connect();
     
-            // Verificar se o token existe no banco de dados
             $stmt = $db->prepare("SELECT * FROM Token WHERE user_id = ? AND token = ?");
             $stmt->execute([$userId, $token]);
             $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo $tokenData;
+            return $tokenData;
             if ($tokenData) {
-                // Token válido e encontrado no banco de dados, o usuário está logado
                 return true;
             } else {
-                // Token inválido ou não encontrado no banco de dados, o usuário não está logado
                 return false;
             }
         } catch (Exception $e) {
-            // Ocorreu um erro na verificação do token
             return false;
         }
     }

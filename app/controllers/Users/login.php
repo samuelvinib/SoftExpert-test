@@ -40,7 +40,6 @@ function login($params)
             }
         
             unset($user['password']);
-            unset($user['role']);
             unset($user['created_at']);
             unset($user['updated_at']);
             echo json_encode(['user' => $user, 'bearer_token' => "Bearer $accessToken"]);

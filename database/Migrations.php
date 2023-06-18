@@ -40,19 +40,19 @@ class Migrations
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
         price DECIMAL(10, 2),
-        tipo_product_id INT,
+        type_product_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (tipo_product_id) REFERENCES ProductType(id)
+        FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
     );";
     
     $sqlProductTax = "CREATE TABLE ProductTax (
         id SERIAL PRIMARY KEY,
-        tipo_product_id INT,
+        type_product_id INT,
         tax_percentage DECIMAL(5, 2),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (tipo_product_id) REFERENCES ProductType(id)
+        FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
     );";
     
     $sqlUsers = "CREATE TABLE Users (

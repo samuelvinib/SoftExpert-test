@@ -1,33 +1,46 @@
 <?php
-
+include_once './database/Database.php';
 class Jwt {
     private $secretKey;
-    
+    private $db;
+
     public function __construct() {
         $this->secretKey = $_ENV['APP_KEY'];
     }
     
-    public function generateAccessToken($userId) {
+    public function generateAccessToken($user) {
         $expirationTime = time() + 3600;
-        
+    
         $header = [
             'typ' => 'JWT',
             'alg' => 'HS256'
         ];
-        
+    
         $payload = [
-            'user_id' => $userId,
+            'user_id' => $user['id'],
             'exp' => $expirationTime
         ];
-        
+    
         $encodedHeader = $this->base64UrlEncode(json_encode($header));
         $encodedPayload = $this->base64UrlEncode(json_encode($payload));
-        
+    
         $signature = hash_hmac('sha256', $encodedHeader . '.' . $encodedPayload, $this->secretKey, true);
-        
+    
         $encodedSignature = $this->base64UrlEncode($signature);
-        
-        return $encodedHeader . '.' . $encodedPayload . '.' . $encodedSignature;
+    
+        $token = $encodedHeader . '.' . $encodedPayload . '.' . $encodedSignature;
+    
+        // Salvar o token na tabela Token
+        $database = new Database();
+        $db = $database->connect();
+    
+        $expiresAt = date('Y-m-d H:i:s', $expirationTime); // Converter para formato de data e hora do banco de dados
+    
+        $sql = "INSERT INTO Token (user_id, token, expires_at) VALUES (?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$user['id'], $token, $expiresAt]);
+    
+        return $token;
     }
     
     public function verifyAccessToken($token) {
@@ -69,4 +82,5 @@ class Jwt {
         $base64 = base64_decode($base64Url);
         return $base64;
     }
+    
 }

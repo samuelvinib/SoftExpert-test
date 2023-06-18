@@ -31,7 +31,7 @@ class Migrations
 
       $sqlProductType = "CREATE TABLE ProductType (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255),
+        name VARCHAR(255) UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );";
@@ -59,8 +59,8 @@ class Migrations
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
         password VARCHAR(255),
-        email VARCHAR(255),
-        role VARCHAR(255),
+        email VARCHAR(255) UNIQUE,
+        role VARCHAR(255) DEFAULT 'user',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );";
@@ -69,15 +69,6 @@ class Migrations
       id SERIAL PRIMARY KEY,
       user_id INT,
       token VARCHAR(255),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      expires_at TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES Users(id)
-    );";
-
-    $sqlRefreshToken = "CREATE TABLE RefreshToken (
-      id SERIAL PRIMARY KEY,
-      user_id INT,
-      refresh_token VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       expires_at TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES Users(id)
@@ -112,7 +103,6 @@ class Migrations
       $this->connection->exec($sqlProductTax);
       $this->connection->exec($sqlUsers);
       $this->connection->exec($sqlToken);
-      $this->connection->exec($sqlRefreshToken);
       $this->connection->exec($sqlSale);
       $this->connection->exec($sqlSaleItem);
 

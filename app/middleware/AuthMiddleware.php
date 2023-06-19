@@ -64,9 +64,6 @@ class AuthMiddleware
                     echo $expiresAt;
                     return false;
                 }
-                echo $expiresAt;
-                echo ' ';
-                echo $currentTimestamp;
                 return true;
             } else {
                 return false;

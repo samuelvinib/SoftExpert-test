@@ -1,4 +1,5 @@
 <?php
+
 class SaleController
 {
     private $db;
@@ -10,57 +11,73 @@ class SaleController
 
     public function createSale($date, $total_value, $total_tax, $user_id)
     {
-        $stmt = $this->db->prepare("INSERT INTO Sale (date, total_value, total_tax, user_id) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$date, $total_value, $total_tax, $user_id]);
+        try {
+            $stmt = $this->db->prepare("INSERT INTO Cart (total_value, total_tax, user_id) VALUES (?, ?, ?)");
+            $stmt->execute([$date, $total_value, $total_tax, $user_id]);
 
-        if ($stmt->rowCount() > 0) {
-            return true;
+            if ($stmt->rowCount() > 0) {
+                return true;
+            }
+        } catch (PDOException $e) {
+            echo "Error creating sale: " . $e->getMessage();
         }
 
         return false;
     }
 
-
     public function getAllSales()
     {
-        $stmt = $this->db->prepare("SELECT * FROM Sale");
-        $stmt->execute();
-        $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($sales as $sale) {
-            $saleId = $sale['id'];
-
-            // Obter os itens de venda correspondentes ao sale_id da venda atual
-            $stmt = $this->db->prepare("SELECT * FROM SaleItem WHERE sale_id = :sale_id");
-            $stmt->bindParam(':sale_id', $saleId, PDO::PARAM_INT);
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Cart");
             $stmt->execute();
-            $saleItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sales = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Adicionar a venda e seus itens ao resultado
-            $sale['sale_items'] = $saleItems;
-            $result[] = $sale;
+            $result = [];
+
+            foreach ($sales as $sale) {
+                $saleId = $sale['id'];
+
+                $stmt = $this->db->prepare("SELECT * FROM SaleItem WHERE sale_id = :sale_id");
+                $stmt->bindParam(':sale_id', $saleId, PDO::PARAM_INT);
+                $stmt->execute();
+                $saleItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $sale['sale_items'] = $saleItems;
+                $result[] = $sale;
+            }
+
+            return $result;
+        } catch (PDOException $e) {
+            echo "Error getting sales: " . $e->getMessage();
+            return [];
         }
-        return $result;
     }
-
 
     public function getSaleById($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Sale WHERE id = ?");
-        $stmt->execute([$id]);
-        $sale = $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Cart WHERE id = ?");
+            $stmt->execute([$id]);
+            $sale = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $saleId = $sale['id'];
+            $result = [];
 
-            // Obter os itens de venda correspondentes ao sale_id da venda atual
-            $stmt = $this->db->prepare("SELECT * FROM SaleItem WHERE sale_id = :sale_id");
-            $stmt->bindParam(':sale_id', $saleId, PDO::PARAM_INT);
-            $stmt->execute();
-            $saleItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($sale) {
+                $saleId = $sale['id'];
 
-            // Adicionar a venda e seus itens ao resultado
-            $sale['sale_items'] = $saleItems;
-            $result[] = $sale;
-        return $result;
+                $stmt = $this->db->prepare("SELECT * FROM SaleItem WHERE sale_id = :sale_id");
+                $stmt->bindParam(':sale_id', $saleId, PDO::PARAM_INT);
+                $stmt->execute();
+                $saleItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $sale['sale_items'] = $saleItems;
+                $result[] = $sale;
+            }
+
+            return $result;
+        } catch (PDOException $e) {
+            echo "Error getting sale by ID: " . $e->getMessage();
+            return [];
+        }
     }
 }

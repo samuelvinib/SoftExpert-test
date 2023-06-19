@@ -18,8 +18,6 @@ class Seed
             $this->seedProduct();
             $this->seedProductTax();
             $this->seedUsers();
-            $this->seedSale();
-            $this->seedSaleItem();
 
             echo 'Seed completed successfully.';
         } catch (Exception $e) {
@@ -121,59 +119,6 @@ class Seed
             if (!$existingUser) {
                 $stmt = $this->db->prepare("INSERT INTO Users (name, password, email, role) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$name, $password, $email, $role]);
-            }
-        }
-    }
-
-    private function seedSale()
-    {
-        $sales = [
-            ['date' => '2023-01-01', 'total_value' => 50.99, 'total_tax' => 5.0, 'user_id' => 1],
-            ['date' => '2023-01-02', 'total_value' => 100.50, 'total_tax' => 8.5, 'user_id' => 2],
-            ['date' => '2023-01-03', 'total_value' => 25.75, 'total_tax' => 3.2, 'user_id' => 3],
-        ];
-
-        foreach ($sales as $sale) {
-            $date = $sale['date'];
-            $total_value = $sale['total_value'];
-            $total_tax = $sale['total_tax'];
-            $user_id = $sale['user_id'];
-
-            // Verifica se a venda já existe
-            $stmt = $this->db->prepare("SELECT id FROM Sale WHERE date = ? AND user_id = ?");
-            $stmt->execute([$date, $user_id]);
-            $existingSale = $stmt->fetch();
-
-            if (!$existingSale) {
-                $stmt = $this->db->prepare("INSERT INTO Sale (date, total_value, total_tax, user_id) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$date, $total_value, $total_tax, $user_id]);
-            }
-        }
-    }
-
-    private function seedSaleItem()
-    {
-        $saleItems = [
-            ['sale_id' => 1, 'product_id' => 1, 'quantity' => 2, 'item_total_value' => 21.98, 'tax_amount' => 2.2],
-            ['sale_id' => 1, 'product_id' => 2, 'quantity' => 1, 'item_total_value' => 19.99, 'tax_amount' => 1.7],
-            ['sale_id' => 2, 'product_id' => 2, 'quantity' => 3, 'item_total_value' => 59.97, 'tax_amount' => 5.1],
-        ];
-
-        foreach ($saleItems as $saleItem) {
-            $sale_id = $saleItem['sale_id'];
-            $product_id = $saleItem['product_id'];
-            $quantity = $saleItem['quantity'];
-            $item_total_value = $saleItem['item_total_value'];
-            $tax_amount = $saleItem['tax_amount'];
-
-            // Verifica se o item de venda já existe
-            $stmt = $this->db->prepare("SELECT id FROM SaleItem WHERE sale_id = ? AND product_id = ?");
-            $stmt->execute([$sale_id, $product_id]);
-            $existingSaleItem = $stmt->fetch();
-
-            if (!$existingSaleItem) {
-                $stmt = $this->db->prepare("INSERT INTO SaleItem (sale_id, product_id, quantity, item_total_value, tax_amount) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$sale_id, $product_id, $quantity, $item_total_value, $tax_amount]);
             }
         }
     }

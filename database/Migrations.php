@@ -41,11 +41,9 @@ class Migrations
         name VARCHAR(255),
         price DECIMAL(10, 2),
         type_product_id INT,
-        tax_product_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
-        FOREIGN KEY (tax_product_id) REFERENCES ProductTax(id)
     );";
     
     $sqlProductTax = "CREATE TABLE ProductTax (
@@ -76,35 +74,36 @@ class Migrations
       FOREIGN KEY (user_id) REFERENCES Users(id)
     );";
     
-    $sqlSale = "CREATE TABLE Sale (
-        id SERIAL PRIMARY KEY,
-        total_value DECIMAL(10, 2),
-        total_tax DECIMAL(10, 2),
-        user_id INT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES Users(id)
-    );";
+    $sqlCart = "CREATE TABLE Cart (
+      id SERIAL PRIMARY KEY,
+      total_value DECIMAL(10, 2),
+      total_tax DECIMAL(10, 2),
+      user_id INT,
+      status VARCHAR(20) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES Users(id)
+  );";
     
     $sqlSaleItem = "CREATE TABLE SaleItem (
         id SERIAL PRIMARY KEY,
-        sale_id INT,
+        cart_id INT,
         product_id INT,
         quantity INT,
         item_total_value DECIMAL(10, 2),
         tax_amount DECIMAL(10, 2),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (sale_id) REFERENCES Sale(id),
+        FOREIGN KEY (cart_id) REFERENCES Cart(id),
         FOREIGN KEY (product_id) REFERENCES Product(id)
     );";
 
       $this->connection->exec($sqlProductType);
-      $this->connection->exec($sqlProduct);
       $this->connection->exec($sqlProductTax);
+      $this->connection->exec($sqlProduct);
       $this->connection->exec($sqlUsers);
       $this->connection->exec($sqlToken);
-      $this->connection->exec($sqlSale);
+      $this->connection->exec($sqlCart);
       $this->connection->exec($sqlSaleItem);
 
       echo "Database and tables successfully created!";

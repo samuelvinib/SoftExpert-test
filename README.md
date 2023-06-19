@@ -56,7 +56,7 @@
  ## Passo 6
    Em seguida, popule as tabelas com dados iniciais:
 ```bash
-  --
+  php database/Seed.php
 ```
 
  ## Passo 7

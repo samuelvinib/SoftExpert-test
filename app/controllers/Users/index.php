@@ -28,7 +28,6 @@ if ($method === 'POST' && $uri_request[2] === 'register') {
     $requestBody = file_get_contents('php://input');
     $requestData = json_decode($requestBody, true);
     if (isset($requestData['password'], $requestData['email'])) {
-        echo $middleware->handleRequest();
         login($requestData);
     } else {
         http_response_code(400);

@@ -15,6 +15,7 @@ $data = json_decode(file_get_contents("php://input"));
         $sql = "INSERT INTO Users (name, password, email) VALUES (?, ?, ?)";
     $stmt = $db->prepare($sql);
     $stmt->execute([$params['name'], $hashedPassword, $params['email']]);
+    echo 'user created successfully!';
     }catch(PDOException $e){
         http_response_code(400);
         echo json_encode($e);

@@ -2,11 +2,6 @@
 
 define('BASE_PATH', __DIR__);
 
-require_once './app/middleware/AuthMiddleware.php';
-
-$middleware = new AuthMiddleware();
-$middleware->handleRequest();
-
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -21,7 +16,8 @@ $usersRoutes = include BASE_PATH . '/app/routes/users.php';
 $productsRoutes = include BASE_PATH . '/app/routes/product.php';
 $productTypeRoutes = include BASE_PATH . '/app/routes/productType.php';
 $productTaxRoutes = include BASE_PATH . '/app/routes/productTax.php';
-$routes = array_merge($routes, $usersRoutes,$productsRoutes,$productTypeRoutes, $productTaxRoutes);
+$saleRoutes = include BASE_PATH . '/app/routes/sale.php';
+$routes = array_merge($routes, $usersRoutes,$productsRoutes,$productTypeRoutes, $productTaxRoutes, $saleRoutes);
 
 if (array_key_exists($routePath, $routes)) {
     include BASE_PATH . '/' . $routes[$routePath];

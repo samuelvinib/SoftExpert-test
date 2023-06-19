@@ -41,9 +41,11 @@ class Migrations
         name VARCHAR(255),
         price DECIMAL(10, 2),
         type_product_id INT,
+        tax_product_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
+        FOREIGN KEY (tax_product_id) REFERENCES ProductTax(id)
     );";
     
     $sqlProductTax = "CREATE TABLE ProductTax (
@@ -76,7 +78,6 @@ class Migrations
     
     $sqlSale = "CREATE TABLE Sale (
         id SERIAL PRIMARY KEY,
-        date DATE,
         total_value DECIMAL(10, 2),
         total_tax DECIMAL(10, 2),
         user_id INT,

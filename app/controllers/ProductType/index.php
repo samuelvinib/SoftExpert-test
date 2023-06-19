@@ -3,6 +3,10 @@ require_once './app/controllers/ProductType/ProductTypeController.php';
 
 require_once './app/middleware/RoleAdminMiddleware.php';
 require_once './app/middleware/TokenMiddleware.php';
+require_once './app/middleware/AuthMiddleware.php';
+
+$authMiddleware = new AuthMiddleware();
+$authMiddleware->handleRequest();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri_request = explode('?',explode('/',$_SERVER['REQUEST_URI'])[2])[0];

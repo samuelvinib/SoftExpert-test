@@ -35,7 +35,7 @@ if ($method === 'GET' && $uri_request === 'sale') {
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     echo $userData['id'];
-    $result = $saleController->createSale($data['date'],);
+    // $result = $saleController->createSale($data['date']);
     echo $result;
 } else {
     http_response_code(405);

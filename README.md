@@ -67,8 +67,4 @@
 #
 <br>
  
-<h3 align="center">Agora é só acessar o link abaixo ou clicar <a href="http://localhost:8080" target="_blank">aqui</a> para utilizar o projeto!</h3>
-
-```bash
-  http://localhost:8080
-```
+<h3 align="center">Import o arquivo de rotas em seu postman, o arquivo se encontra na raiz do projeto com o nome: "routes-collection.json"</h3>

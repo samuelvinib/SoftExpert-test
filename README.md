@@ -9,7 +9,7 @@
 >
 >Descrição: O projeto é um sistema de backend em PHP para gerenciar produtos e vendas. Ele permite o cadastro de produtos, tipos de produtos e valores percentuais de imposto para cada tipo. A tela de venda permite registrar os produtos adquiridos e suas quantidades, calculando o valor total de cada item e o valor do imposto pago. O sistema também apresenta totalizadores para o valor da compra e o valor dos impostos. As vendas são salvas para registro e os dados são armazenados em um banco de dados.
 >
-> ## Projeto Frontend - Lista de Veículos em Angular
+> ## Projeto Frontend - Interface do mercado
 > Descrição: O projeto consiste em um frontend desenvolvido em React que se integra a um sistema de backend em PHP para gerenciar produtos e vendas. O frontend permite o cadastro de produtos, tipos de produtos e valores percentuais de imposto. Também oferece uma tela de venda onde é possível registrar produtos adquiridos, calcular valores e impostos, e exibir totalizadores. As transações são enviadas ao backend para serem armazenadas no banco de dados. O frontend é responsivo e oferece uma experiência intuitiva aos usuários.
 >
 > ### Empresa: SoftExpert

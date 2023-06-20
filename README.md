@@ -39,7 +39,7 @@
 
  ## Passo 3
    Preencha o arquivo .env com dos dados de seu banco Postgresql:
-<img src="uploads/env-example.png" width="250" style=" display: block;margin:10px auto 10px 0;">
+<div width="100%"><img src="uploads/env-example.png" width="250" style=" display: block;margin:25px auto 10px 0;"></div>
 
  ## Passo 4
    Execute o seguinte comando para criar a api key:

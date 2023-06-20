@@ -3,7 +3,7 @@
 function login($params)
 {
     include_once './database/Database.php';
-    include_once './app/Jwt.php';
+    include_once './app/controllers/Jwt.php';
 
     header('Content-Type: application/json');
     header('Access-Control-Allow-Methods: POST');
@@ -16,19 +16,17 @@ function login($params)
         $password = $params['password'];
         $userId = $params['id'];
 
-        // Verificar se o usuário existe no banco de dados
         $stmt = $db->prepare("SELECT * FROM Users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
-            // Usuário não encontrado
+
             http_response_code(401);
             echo json_encode(['message' => 'User not found']);
             return;
         }
 
-        // Verificar a senha do usuário
         if (password_verify($password, $user['password'])) {
 
             try{

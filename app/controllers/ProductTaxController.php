@@ -7,8 +7,7 @@ class ProductTaxController
     {
         $this->db = (new Database())->connect();
     }
-    
-    // Method to create a new product tax
+
     public function createProductTax($type_product_id, $tax_percentage)
     {
         try {
@@ -31,7 +30,7 @@ class ProductTaxController
         return false;
     }
     
-    // Method to get all product taxes
+
     public function getAllProductTaxes()
     {
         try {
@@ -47,7 +46,6 @@ class ProductTaxController
         }
     }
     
-    // Method to get a product tax by ID
     public function getProductTaxById($id)
     {
         try {
@@ -69,7 +67,6 @@ class ProductTaxController
         }
     }
     
-    // Method to update a product tax
     public function updateProductTax($id, $type_product_id, $tax_percentage)
     {
         try {
@@ -92,7 +89,6 @@ class ProductTaxController
         return false;
     }
     
-    // Method to delete a product tax
     public function deleteProductTax($id)
     {
         try {

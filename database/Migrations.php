@@ -12,11 +12,11 @@ class Migrations
 
   public function __construct()
   {
-      $this->host = $_ENV['DB_HOST'];
-      $this->port = $_ENV['DB_PORT'];
-      $this->db_name = $_ENV['DB_NAME'];
-      $this->username = $_ENV['DB_USER'];
-      $this->password = $_ENV['DB_PASSWORD'];
+    $this->host = $_ENV['DB_HOST'];
+    $this->port = $_ENV['DB_PORT'];
+    $this->db_name = $_ENV['DB_NAME'];
+    $this->username = $_ENV['DB_USER'];
+    $this->password = $_ENV['DB_PASSWORD'];
   }
 
   public function connect()
@@ -34,8 +34,8 @@ class Migrations
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );";
-    
-    $sqlProduct = "CREATE TABLE Product (
+
+      $sqlProduct = "CREATE TABLE Product (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
         price DECIMAL(10, 2),
@@ -44,8 +44,17 @@ class Migrations
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
     );";
-    
-    $sqlProductTax = "CREATE TABLE ProductTax (
+
+      $sqlProduct = "CREATE TABLE ProductImage (
+      id SERIAL PRIMARY KEY,
+      path VARCHAR(255),
+      product_id INT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (product_id) REFERENCES Product(id)
+  );";
+
+      $sqlProductTax = "CREATE TABLE ProductTax (
         id SERIAL PRIMARY KEY,
         type_product_id INT,
         tax_percentage DECIMAL(5, 2),
@@ -53,8 +62,8 @@ class Migrations
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
     );";
-    
-    $sqlUsers = "CREATE TABLE Users (
+
+      $sqlUsers = "CREATE TABLE Users (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
         password VARCHAR(255),
@@ -64,7 +73,7 @@ class Migrations
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );";
 
-    $sqlToken = "CREATE TABLE Token (
+      $sqlToken = "CREATE TABLE Token (
       id SERIAL PRIMARY KEY,
       user_id INT,
       token VARCHAR(255),
@@ -72,8 +81,8 @@ class Migrations
       expires_at TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES Users(id)
     );";
-    
-    $sqlCart = "CREATE TABLE Cart (
+
+      $sqlCart = "CREATE TABLE Cart (
       id SERIAL PRIMARY KEY,
       total_value DECIMAL(10, 2),
       total_tax DECIMAL(10, 2),
@@ -83,8 +92,8 @@ class Migrations
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES Users(id)
   );";
-    
-    $sqlSaleItem = "CREATE TABLE SaleItem (
+
+      $sqlSaleItem = "CREATE TABLE SaleItem (
         id SERIAL PRIMARY KEY,
         cart_id INT,
         product_id INT,

@@ -14,7 +14,7 @@ class AuthMiddleware
         $requiresAuth = $this->checkIfAuthenticationIsRequired();
         if ($requiresAuth) {
             if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-                $this->sendUnauthorizedResponse();
+                $this->sendUnauthorizedResponse('Unauthorized access');
             }
             $BearerToken = $_SERVER['HTTP_AUTHORIZATION'];
             $token = explode(' ', $BearerToken);
@@ -23,59 +23,29 @@ class AuthMiddleware
                 $decodedPayload = $this->jwt->verifyAccessToken($token[1]);
                 $_SESSION['user_id'] = $decodedPayload['user_id'];
 
-                if (!$this->isUserLoggedIn($token[1])) {
-                    $this->sendUnauthorizedResponse();
+                if (!$decodedPayload) {
+                    $this->sendUnauthorizedResponse('Exception: Invalid token');
                 }
             } catch (Exception $e) {
-                $this->sendUnauthorizedResponse();
+                $this->sendUnauthorizedResponse($e);
             }
         }
     }
 
     private function checkIfAuthenticationIsRequired()
     {
-        $authRequiredRoutes = [];
-        $productsRoutes = include BASE_PATH . '/app/routes/product.php';
-        $productTypeRoutes = include BASE_PATH . '/app/routes/productType.php';
-        $productTaxRoutes = include BASE_PATH . '/app/routes/productTax.php';
-        $saleRoutes = include BASE_PATH . '/app/routes/sale.php';
-        $authRequiredRoutes = array_merge($authRequiredRoutes,$productsRoutes,$productTypeRoutes,$productTaxRoutes,$saleRoutes);
-        return $authRequiredRoutes;
+        $routes = [
+            'api/product' => 'app/routes/productRoute.php',
+            'api/product_tax' => 'app/routes/productTaxRoute.php',
+            'api/product_type' => 'app/routes/productTypeRoute.php',
+            'api/sale' => 'app/routes/saleRoute.php',
+        ];
+        return $routes;
     }
 
-    function isUserLoggedIn($token)
-    {
-        try {
-            $decodedPayload = $this->jwt->verifyAccessToken($token);
-
-            $userId = $decodedPayload['user_id'];
-
-            $db = (new Database())->connect();
-
-            $stmt = $db->prepare("SELECT * FROM Token WHERE user_id = ? AND token = ?");
-            $stmt->execute([$userId, $token]);
-            $tokenData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($tokenData) {
-                $expiresAt = strtotime($tokenData['expires_at']);
-                $currentTimestamp = time();
-
-                if ($expiresAt < $currentTimestamp) {
-                    echo $expiresAt;
-                    return false;
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    private function sendUnauthorizedResponse()
+    private function sendUnauthorizedResponse($alert)
     {
         http_response_code(401);
-        exit('Unauthorized access');
+        exit($alert);
     }
 }

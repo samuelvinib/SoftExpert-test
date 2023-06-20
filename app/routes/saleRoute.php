@@ -1,5 +1,5 @@
 <?php
-require_once './app/controllers/Sale/SaleController.php';
+require_once './app/controllers/SaleController.php';
 
 require_once './app/middleware/RoleAdminMiddleware.php';
 require_once './app/middleware/TokenMiddleware.php';

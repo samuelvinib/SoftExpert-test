@@ -19,13 +19,12 @@ class Migrations
       $this->password = $_ENV['DB_PASSWORD'];
   }
 
-  // DB Connect
   public function connect()
   {
     $this->connection = null;
 
     try {
-      // create a new connection with PostgreSQL database;
+
       $this->connection = new PDO('pgsql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->db_name, $this->username, $this->password);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -79,7 +78,7 @@ class Migrations
       total_value DECIMAL(10, 2),
       total_tax DECIMAL(10, 2),
       user_id INT,
-      status VARCHAR(20) NOT NULL,
+      completed_purchase BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES Users(id)

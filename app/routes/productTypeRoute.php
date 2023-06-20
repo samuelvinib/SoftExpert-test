@@ -1,5 +1,5 @@
 <?php
-require_once './app/controllers/ProductTax/ProductTaxController.php';
+require_once './app/controllers/ProductTypeController.php';
 
 require_once './app/middleware/RoleAdminMiddleware.php';
 require_once './app/middleware/TokenMiddleware.php';
@@ -16,38 +16,37 @@ $userData = $tokenMiddleware->handleRequest();
 
 $roleMiddleware = new RoleAdminMiddleware();
 
-$productTaxController = new ProductTaxController();
+$productController = new ProductTypeController();
 
-if ($method === 'GET' && $uri_request === 'product_tax') {
+if ($method === 'GET' && $uri_request === 'product_type') {
     $requestBody = $_GET;
     $data = $requestBody;
     if($data['id']){
         header('Content-Type: application/json');
-        $result = $productTaxController->getProductTaxById($data['id']);
+        $result = $productController->getProductTypeById($data['id']);
         echo json_encode($result);
         exit;
     }
     header('Content-Type: application/json');
-    $result = $productTaxController->getAllProductTaxes();
+    $result = $productController->getAllProductTypes();
     echo json_encode($result);
-}elseif ($method === 'POST' && $uri_request === 'product_tax') {
+}elseif ($method === 'POST' && $uri_request === 'product_type') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
-    $result = $productTaxController->createProductTax($data['type_product_id'], $data['tax_percentage']);
+    $result = $productController->createProductType($data['name']);
     echo $result;
-}elseif ($method === 'PUT' && $uri_request === 'product_tax') {
+}elseif ($method === 'PUT' && $uri_request === 'product_type') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
-    echo $data['id'];
-    $result = $productTaxController->updateProductTax(($data['id']),$data['type_product_id'],$data['tax_percentage']);
+    $result = $productController->updateProductType(($data['id']),$data['name']);
     echo $result;
-}elseif ($method === 'DELETE' && $uri_request === 'product_tax') {
+}elseif ($method === 'DELETE' && $uri_request === 'product_type') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
-    $result = $productTaxController->deleteProductTax(($data['id']));
+    $result = $productController->deleteProductType(($data['id']));
     echo $result;
 } else {
     http_response_code(405);

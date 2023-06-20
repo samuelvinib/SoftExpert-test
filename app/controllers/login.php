@@ -3,7 +3,7 @@
 function login($params)
 {
     include_once './database/Database.php';
-    include_once './app/controllers/Jwt.php';
+    include_once './app/Jwt.php';
 
     header('Content-Type: application/json');
     header('Access-Control-Allow-Methods: POST');

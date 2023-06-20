@@ -50,14 +50,18 @@ class Jwt {
         $encodedSignature = $parts[2];
         
         if (count($parts) !== 3) {
-            throw new Exception('Invalid token');
+            header('Content-Type: application/json');
+            http_response_code(401);
+            exit(json_encode(['message' => 'Invalid token']));
         }
         
         $signature = $this->base64UrlDecode($encodedSignature);
         $expectedSignature = hash_hmac('sha256', $encodedHeader . '.' . $encodedPayload, $this->secretKey, true);
         
         if (!hash_equals($signature, $expectedSignature)) {
-            throw new Exception('Invalid token');
+            header('Content-Type: application/json');
+            http_response_code(401);
+            exit(json_encode(['message' => 'Invalid token']));
         }
         
         $decodedHeader = json_decode($this->base64UrlDecode($encodedHeader), true);
@@ -65,7 +69,9 @@ class Jwt {
         
         $currentTime = time();
         if ($decodedPayload['exp'] < $currentTime) {
-            throw new Exception('Expired token');
+            header('Content-Type: application/json');
+            http_response_code(401);
+            exit(json_encode(['message' => 'Expired token']));
         }
         
         return $decodedPayload;

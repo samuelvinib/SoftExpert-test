@@ -36,7 +36,6 @@ class Seed
         foreach ($productTypes as $productType) {
             $name = $productType['name'];
 
-            // Verifica se o tipo de produto já existe
             $stmt = $this->db->prepare("SELECT id FROM ProductType WHERE name = ?");
             $stmt->execute([$name]);
             $existingType = $stmt->fetch();
@@ -101,8 +100,7 @@ class Seed
     {
         $users = [
             ['name' => 'John Doe', 'password' => 'adm1234', 'email' => 'adm@test.com','role' => 'admin'],
-            ['name' => 'John Test', 'password' => 'password2', 'email' => 'test@teste.com', 'role' => 'user'],
-            ['name' => 'User 3', 'password' => 'password3', 'email' => 'user3@example.com', 'role' => 'user'],
+            ['name' => 'John Test', 'password' => 'test123', 'email' => 'test@teste.com', 'role' => 'user'],
         ];
 
         foreach ($users as $user) {

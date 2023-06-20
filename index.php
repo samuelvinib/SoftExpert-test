@@ -12,16 +12,20 @@ $routePath = strtok($routePath, '?');
 
 $routes = [];
 
-$usersRoutes = include BASE_PATH . '/app/routes/users.php';
-$productsRoutes = include BASE_PATH . '/app/routes/product.php';
-$productTypeRoutes = include BASE_PATH . '/app/routes/productType.php';
-$productTaxRoutes = include BASE_PATH . '/app/routes/productTax.php';
-$saleRoutes = include BASE_PATH . '/app/routes/sale.php';
-$routes = array_merge($routes, $usersRoutes,$productsRoutes,$productTypeRoutes, $productTaxRoutes, $saleRoutes);
+
+$routes = [
+    'api/register' => 'app/routes/userRoute.php',
+    'api/login' => 'app/routes/userRoute.php',
+    'api/product' => 'app/routes/productRoute.php',
+    'api/product_tax' => 'app/routes/productTaxRoute.php',
+    'api/product_type' => 'app/routes/productTypeRoute.php',
+    'api/sale' => 'app/routes/saleRoute.php',
+];
 
 if (array_key_exists($routePath, $routes)) {
     include BASE_PATH . '/' . $routes[$routePath];
 } else {
+    header('Content-Type: application/json');
     http_response_code(404);
     echo json_encode(['error' => 'Route not found']);
 }

@@ -1,18 +1,10 @@
 <?php
-require_once './app/controllers/Users/register.php';
-require_once './app/controllers/Users/login.php';
-
-// require_once './app/middleware/RoleAdminMiddleware.php';
-// require_once './app/middleware/TokenMiddleware.php';
-
-// $middleware = new TokenMiddleware();
+require_once './app/controllers/register.php';
+require_once './app/controllers/login.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri_request = explode('/',$_SERVER['REQUEST_URI']);
 
-// $Adminmiddleware = new RoleAdminMiddleware();
-// $isPermitted = $Adminmiddleware->handleRequest();
-// echo json_encode($isPermitted);
 
 
 if ($method === 'POST' && $uri_request[2] === 'register') {

@@ -1,19 +1,19 @@
 <?php
 
 function updateEnvKey($envFilePath, $keyName, $newValue) {
-    // Ler o conteúdo atual do arquivo .env
+
     $envFile = file_get_contents($envFilePath);
 
     $oldValue = '';
 
     if (strpos($envFile, $keyName . '=') !== false) {
-        // A chave existe no arquivo .env
+
         $matches = [];
         preg_match('/' . $keyName . '=(.*)/', $envFile, $matches);
         $oldValue = $matches[1];
 
         if ($oldValue !== '') {
-            // A chave já possui um valor
+
             echo 'Warning: The key already has a defined value: ' . $oldValue;
         } else {
                 $length = 32;
@@ -30,12 +30,9 @@ function updateEnvKey($envFilePath, $keyName, $newValue) {
                 echo 'api key successfully generated!';
         }
     } else {
-        // A chave não existe no arquivo .env
         echo 'Warning: The key ' . $keyName . ' not found in .env file';
     }
 }
-
-// Exemplo de uso
 $envFilePath = '.env';
 $keyName = 'APP_KEY';
 $newValue = 'sua_nova_app_key';

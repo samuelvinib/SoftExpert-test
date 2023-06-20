@@ -19,13 +19,12 @@ class Database
         $this->password = $_ENV['DB_PASSWORD'];
     }
 
-    // DB Connect
     public function connect()
     {
         $this->connection = null;
 
         try {
-            // Create a new connection with PostgreSQL database
+
             $this->connection = new PDO('pgsql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->db_name, $this->username, $this->password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {

@@ -59,6 +59,7 @@ class Seed
             $name = $product['name'];
             $price = $product['price'];
             $type_product_id = $product['type_product_id'];
+            $image_path = $product['image_path'];
 
             // Verifica se o produto já existe
             $stmt = $this->db->prepare("SELECT id FROM Product WHERE name = ?");
@@ -66,8 +67,8 @@ class Seed
             $existingProduct = $stmt->fetch();
 
             if (!$existingProduct) {
-                $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id) VALUES (?, ?, ?)");
-                $stmt->execute([$name, $price, $type_product_id]);
+                $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id, image_path) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$name, $price, $type_product_id, $image_path]);
             }
         }
     }

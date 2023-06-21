@@ -1,24 +1,31 @@
 <?php
 
-function register($params){
-include_once './database/Database.php';
+function register($params)
+{
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST');
+    if(!$params['email'] || !$params['password'] || !$params['name']){
+        http_response_code(422);
+        exit(json_encode(['message' => 'The given data was invalid.',
+        'error' => ['The email field is required.',
+        'The password field is required.',
+        'The name field is required.'
+        ]
+    ]));
+    };
 
-$data = json_decode(file_get_contents("php://input"));
+    include_once './database/Database.php';
+
     $hashedPassword = password_hash($params['password'], PASSWORD_DEFAULT);
     $database = new Database();
     $db = $database->connect();
 
-    try{
+    try {
         $sql = "INSERT INTO Users (name, password, email) VALUES (?, ?, ?)";
-    $stmt = $db->prepare($sql);
-    $stmt->execute([$params['name'], $hashedPassword, $params['email']]);
-    echo 'user created successfully!';
-    }catch(PDOException $e){
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$params['name'], $hashedPassword, $params['email']]);
+        exit(json_encode(['message' => 'user created successfully!']));
+    } catch (PDOException $e) {
         http_response_code(400);
-        echo json_encode($e);
+        exit(json_encode(['message' => 'Could not create user!', 'error' => $e->getMessage()]));
     }
-
 }

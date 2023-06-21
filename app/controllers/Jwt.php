@@ -30,11 +30,10 @@ class Jwt {
     
         $token = $encodedHeader . '.' . $encodedPayload . '.' . $encodedSignature;
     
-        // Salvar o token na tabela Token
         $database = new Database();
         $db = $database->connect();
     
-        $expiresAt = date('Y-m-d H:i:s', $expirationTime); // Converter para formato de data e hora do banco de dados
+        $expiresAt = date('Y-m-d H:i:s', $expirationTime);
     
         $sql = "INSERT INTO Token (user_id, token, expires_at) VALUES (?, ?, ?)";
         $stmt = $db->prepare($sql);
@@ -50,7 +49,6 @@ class Jwt {
         $encodedSignature = $parts[2];
         
         if (count($parts) !== 3) {
-            header('Content-Type: application/json');
             http_response_code(401);
             exit(json_encode(['message' => 'Invalid token']));
         }
@@ -59,7 +57,6 @@ class Jwt {
         $expectedSignature = hash_hmac('sha256', $encodedHeader . '.' . $encodedPayload, $this->secretKey, true);
         
         if (!hash_equals($signature, $expectedSignature)) {
-            header('Content-Type: application/json');
             http_response_code(401);
             exit(json_encode(['message' => 'Invalid token']));
         }
@@ -69,7 +66,6 @@ class Jwt {
         
         $currentTime = time();
         if ($decodedPayload['exp'] < $currentTime) {
-            header('Content-Type: application/json');
             http_response_code(401);
             exit(json_encode(['message' => 'Expired token']));
         }

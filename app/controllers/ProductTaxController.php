@@ -10,24 +10,33 @@ class ProductTaxController
 
     public function createProductTax($type_product_id, $tax_percentage)
     {
+        
+        if(!$type_product_id || !$tax_percentage){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => ['The type_product_id field is required.',
+            'The tax_percentage field is required.'
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("INSERT INTO ProductTax (type_product_id, tax_percentage) VALUES (?, ?)");
             $stmt->execute([$type_product_id, $tax_percentage]);
             
             if ($stmt->rowCount() > 0) {
                 http_response_code(201);
-                echo "New product tax created successfully.";
-                return true;
+                exit(json_encode(["message: " => "New product tax created successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error creating a new product tax: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => 'Error creating a new product tax',
+            "error" => $e->getMessage()
+        ]));
         }
         
         http_response_code(400);
-        echo "Failed to create a new product tax.";
-        return false;
+        exit(json_encode(["message: " => "Failed to create a new product tax."]));
     }
     
 
@@ -38,11 +47,12 @@ class ProductTaxController
             $stmt->execute();
             $productTaxes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            return $productTaxes;
+            echo json_encode($productTaxes);
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error retrieving product taxes: " . $e->getMessage();
-            return false;
+            exit(json_encode(["message: " => "Error retrieving product taxes",
+            'error' => $e->getMessage()
+        ]));
         }
     }
     
@@ -54,16 +64,17 @@ class ProductTaxController
             $productTax = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($productTax) {
-                return $productTax;
+                echo $productTax;
             }
             
             http_response_code(400);
-            echo "Product tax not found in the database.";
+            exit(json_encode(["message: " => "Product tax not found in the database."]));
             return false;
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error retrieving product tax: " . $e->getMessage();
-            return false;
+            exit(json_encode(["message: " => "Error retrieving product tax.",
+            'error' => $e->getMessage()
+        ]));
         }
     }
     
@@ -75,18 +86,17 @@ class ProductTaxController
             
             if ($stmt->rowCount() > 0) {
                 http_response_code(200);
-                echo "Product tax updated successfully.";
-                return true;
+                exit(json_encode(["message: " => "Product tax updated successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error updating product tax: " . $e->getMessage();
-            return false;
+            exit(json_encode(["message: " => "Error updating product tax.",
+            'error' => $e->getMessage()
+        ]));
         }
         
         http_response_code(400);
-        echo "Failed to update product tax.";
-        return false;
+        exit(json_encode(["message: " => "Failed to update product tax."]));
     }
     
     public function deleteProductTax($id)
@@ -97,18 +107,17 @@ class ProductTaxController
             
             if ($stmt->rowCount() > 0) {
                 http_response_code(200);
-                echo "Product tax deleted successfully.";
-                return true;
+                exit(json_encode(["message: " => "Product tax deleted successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error deleting product tax: " . $e->getMessage();
-            return false;
+            exit(json_encode(["message: " => "Error deleting product tax.",
+            'error' => $e->getMessage()
+        ]));
         }
         
         http_response_code(400);
-        echo "Failed to delete product tax.";
-        return false;
+        exit(json_encode(["message: " => "Failed to delete product tax."]));
     }
 }
 ?>

@@ -23,12 +23,10 @@ if ($method === 'GET' && $uri_request === 'sale') {
     $requestBody = $_GET;
     $data = $requestBody;
     if($data['id']){
-        header('Content-Type: application/json');
         $result = $saleController->getSaleById($data['id']);
         echo json_encode($result);
         exit;
     }
-    header('Content-Type: application/json');
     $result = $saleController->getAllSales();
     echo json_encode($result);
 }elseif ($method === 'POST' && $uri_request === 'sale') {
@@ -39,5 +37,5 @@ if ($method === 'GET' && $uri_request === 'sale') {
     echo $result;
 } else {
     http_response_code(405);
-    echo 'method not allowed';
+    echo json_encode(['message' => 'method not allowed']);
 }

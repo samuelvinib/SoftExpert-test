@@ -19,18 +19,15 @@ class ProductTypeController
 
             if ($stmt->rowCount() > 0) {
                 http_response_code(201);
-                echo "New product type created successfully.";
-                return true;
+                exit(json_encode(['message' => 'New product type created successfully.']));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error creating a new product type: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => "Error creating a new product type.",'error' => $e->getMessage()]));
         }
         
         http_response_code(400);
-        echo "Failed to create a new product type.";
-        return false;
+        exit(json_encode(['message' => "Failed to create a new product type."]));
     }
 
     public function getAllProductTypes()
@@ -40,11 +37,12 @@ class ProductTypeController
             $stmt->execute();
             $productTypes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return $productTypes;
+            exit(json_encode($productTypes));
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error retrieving product types: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => "Error retrieving product types.",
+            'error' => $e->getMessage()
+        ]));
         }
     }
     
@@ -55,14 +53,15 @@ class ProductTypeController
             $stmt->execute([$id]);
             $productType = $stmt->fetch(PDO::FETCH_ASSOC);
             if($productType){
-                return $productType;
+                exit(json_encode($productType));
             }
             http_response_code(400);
-            return "product not found in bank";
+            exit(json_encode(['message' => "product not found in bank"]));
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error retrieving product type: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => "Error retrieving product type.",
+            'error' => $e->getMessage()
+        ]));
         }
     }
     
@@ -74,18 +73,17 @@ class ProductTypeController
 
             if ($stmt->rowCount() > 0) {
                 http_response_code(200);
-                echo "Product type updated successfully.";
-                return true;
+                exit(json_encode(['message' => "Product type updated successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error updating product type: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => "Error updating product type.",
+            'error' => $e->getMessage()
+        ]));
         }
         
         http_response_code(400);
-        echo "Failed to update product type.";
-        return false;
+        exit(json_encode(['message' => "Failed to update product type."]));
     }
     
 
@@ -97,17 +95,16 @@ class ProductTypeController
 
             if ($stmt->rowCount() > 0) {
                 http_response_code(200);
-                echo "Product type deleted successfully.";
-                return true;
+                exit(json_encode(['message' => "Product type deleted successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error deleting product type: " . $e->getMessage();
-            return false;
+            exit(json_encode(['message' => "Error deleting product type.",
+            'error' => $e->getMessage()
+        ]));
         }
         
         http_response_code(400);
-        echo "Failed to delete product type.";
-        return false;
+        exit(json_encode(['message' => "Product type does not exist in the database."]));
     }
 }

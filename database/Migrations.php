@@ -45,18 +45,18 @@ class Migrations
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
     );";
 
-      $sqlProduct = "CREATE TABLE ProductImage (
+      $sqlProductImage = "CREATE TABLE ProductImage (
       id SERIAL PRIMARY KEY,
       path VARCHAR(255),
       product_id INT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (product_id) REFERENCES Product(id)
-  );";
+    );";
 
       $sqlProductTax = "CREATE TABLE ProductTax (
         id SERIAL PRIMARY KEY,
-        type_product_id INT,
+        type_product_id INT UNIQUE,
         tax_percentage DECIMAL(5, 2),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -65,9 +65,9 @@ class Migrations
 
       $sqlUsers = "CREATE TABLE Users (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255),
+        name VARCHAR(255) NOT NULL,
         password VARCHAR(255),
-        email VARCHAR(255) UNIQUE,
+        email VARCHAR(255) UNIQUE NOT NULL,
         role VARCHAR(255) DEFAULT 'user',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -109,6 +109,7 @@ class Migrations
       $this->connection->exec($sqlProductType);
       $this->connection->exec($sqlProductTax);
       $this->connection->exec($sqlProduct);
+      $this->connection->exec($sqlProductImage );
       $this->connection->exec($sqlUsers);
       $this->connection->exec($sqlToken);
       $this->connection->exec($sqlCart);

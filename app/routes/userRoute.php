@@ -10,22 +10,14 @@ $uri_request = explode('/',$_SERVER['REQUEST_URI']);
 if ($method === 'POST' && $uri_request[2] === 'register') {
     $requestBody = file_get_contents('php://input');
     $requestData = json_decode($requestBody, true);
-    if (isset($requestData['name'], $requestData['password'], $requestData['email'])) {
-        register($requestData);
-    } else {
-        http_response_code(400);
-        echo 'Missing data in request body';
-    }
+    $result = register($requestData);
+    echo $result;
 }elseif ($method === 'POST' && $uri_request[2] === 'login') {
     $requestBody = file_get_contents('php://input');
     $requestData = json_decode($requestBody, true);
-    if (isset($requestData['password'], $requestData['email'])) {
-        login($requestData);
-    } else {
-        http_response_code(400);
-        echo 'Missing data in request body';
-    }
+    $result = login($requestData);
+    echo $result;
 } else {
     http_response_code(405);
-    echo 'method not allowed';
+    echo json_encode(['message' => 'method not allowed']);
 }

@@ -22,34 +22,30 @@ if ($method === 'GET' && $uri_request === 'product_tax') {
     $requestBody = $_GET;
     $data = $requestBody;
     if($data['id']){
-        header('Content-Type: application/json');
         $result = $productTaxController->getProductTaxById($data['id']);
-        echo json_encode($result);
-        exit;
+        return json_encode($result);
     }
-    header('Content-Type: application/json');
     $result = $productTaxController->getAllProductTaxes();
-    echo json_encode($result);
+    return json_encode($result);
 }elseif ($method === 'POST' && $uri_request === 'product_tax') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     $result = $productTaxController->createProductTax($data['type_product_id'], $data['tax_percentage']);
-    echo $result;
+    return $result;
 }elseif ($method === 'PUT' && $uri_request === 'product_tax') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
-    echo $data['id'];
     $result = $productTaxController->updateProductTax(($data['id']),$data['type_product_id'],$data['tax_percentage']);
-    echo $result;
+    return $result;
 }elseif ($method === 'DELETE' && $uri_request === 'product_tax') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     $result = $productTaxController->deleteProductTax(($data['id']));
-    echo $result;
+    return  $result;
 } else {
     http_response_code(405);
-    echo 'method not allowed';
+    echo json_encode(['message' => 'method not allowed']);
 }

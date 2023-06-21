@@ -11,18 +11,28 @@ class ProductController
 
     public function createProduct($name, $price, $type_product_id)
     {
+
+        if(!$name || !$price || !$type_product_id){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => ['The name field is required.',
+            'The price field is required.',
+            'The type_product_id field is required.'
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id) VALUES (?, ?, ?)");
             $stmt->execute([$name, $price, $type_product_id]);
 
             if ($stmt->rowCount() > 0) {
                 http_response_code(201);
-                echo "New product created successfully.";
-                return true;
+                echo (json_encode(['message' => 'New product created successfully.']));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error: " . $e->getMessage();
+            exit(json_encode(['message' => 'Failed to create a new product.', 'error' => $e->getMessage()]));
         }
 
         return false;
@@ -73,11 +83,10 @@ class ProductController
             }}
             }
 
-            return $products;
+            echo json_encode($products);
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error: " . $e->getMessage();
-            return [];
+            echo json_encode(["Error: " . $e->getMessage()]);
         }
     }
 
@@ -88,11 +97,10 @@ class ProductController
             $stmt->execute([$id]);
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $product;
+            echo $product;
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error: " . $e->getMessage();
-            return null;
+            exit(json_encode(["Error: " => $e->getMessage()]));
         }
     }
 
@@ -103,15 +111,14 @@ class ProductController
             $stmt->execute([$name, $price, $type_product_id, $id]);
 
             if ($stmt->rowCount() > 0) {
-                echo "Product updated successfully.";
-                return true;
+                exit(json_encode(["message: " => "Product updated successfully."]));
             }
 
             http_response_code(400);
-            echo "Product not found in database.";
+            exit(json_encode(["message: " => "Product not found in database."]));
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error: " . $e->getMessage();
+            exit(json_encode(["Error: " => $e->getMessage()]));
         }
 
         return false;
@@ -126,16 +133,14 @@ class ProductController
 
             if ($stmt->rowCount() > 0) {
                 http_response_code(200);
-                echo "Product deleted successfully.";
-                return true;
+                exit(json_encode(["message: " => "Product deleted successfully."]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            echo "Error deleting product: " . $e->getMessage();
+            exit(json_encode(["message: " => "Error deleting product.", "error" => $e->getMessage()]));
         }
 
         http_response_code(400);
-        echo "Failed to delete product.";
-        return false;
+        exit(json_encode(["message: " => "Failed to delete product."]));
     }
 }

@@ -23,6 +23,7 @@ $routes = [
 ];
 
 if (array_key_exists($routePath, $routes)) {
+    header('Content-Type: application/json');
     include BASE_PATH . '/' . $routes[$routePath];
 } else {
     header('Content-Type: application/json');

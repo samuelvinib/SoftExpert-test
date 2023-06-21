@@ -13,6 +13,16 @@ class ProductTypeController
     
     public function createProductType($name)
     {
+
+        if(!$name){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => [
+                'The name field is required.',
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("INSERT INTO ProductType (name) VALUES (?)");
             $stmt->execute([$name]);
@@ -67,6 +77,17 @@ class ProductTypeController
     
     public function updateProductType($id, $name)
     {
+
+        if(!$name || !$id){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => [
+                'The name field is required.',
+                'The id field is required.',
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("UPDATE ProductType SET name = ? WHERE id = ?");
             $stmt->execute([$name, $id]);
@@ -89,6 +110,16 @@ class ProductTypeController
 
     public function deleteProductType($id)
     {
+
+        if(!$id){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => [
+                'The id field is required.',
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("DELETE FROM ProductType WHERE id = ?");
             $stmt->execute([$id]);

@@ -80,6 +80,17 @@ class ProductTaxController
     
     public function updateProductTax($id, $type_product_id, $tax_percentage)
     {
+        
+        if(!$type_product_id || !$tax_percentage || !$id ){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => ['The type_product_id field is required.',
+            'The tax_percentage field is required.',
+            'The id field is required.',
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("UPDATE ProductTax SET type_product_id = ?, tax_percentage = ? WHERE id = ?");
             $stmt->execute([$type_product_id, $tax_percentage, $id]);
@@ -101,6 +112,16 @@ class ProductTaxController
     
     public function deleteProductTax($id)
     {
+
+        if(!$id ){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => [
+            'The id field is required.',
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("DELETE FROM ProductTax WHERE id = ?");
             $stmt->execute([$id]);

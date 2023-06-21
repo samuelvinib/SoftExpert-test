@@ -97,7 +97,7 @@ class ProductController
             $stmt->execute([$id]);
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            echo $product;
+            exit(json_encode($product));
         } catch (PDOException $e) {
             http_response_code(500);
             exit(json_encode(["Error: " => $e->getMessage()]));
@@ -106,6 +106,18 @@ class ProductController
 
     public function updateProduct($id, $name, $price, $type_product_id)
     {
+
+        if(!$name || !$price || !$type_product_id || !$id){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => ['The name field is required.',
+            'The price field is required.',
+            'The type_product_id field is required.',
+            'The id field is required.'
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("UPDATE Product SET name = ?, price = ?, type_product_id = ? WHERE id = ?");
             $stmt->execute([$name, $price, $type_product_id, $id]);
@@ -127,6 +139,15 @@ class ProductController
 
     public function deleteProduct($id)
     {
+
+        if(!$id){
+            http_response_code(422);
+            exit(json_encode(['message' => 'The given data was invalid.',
+            'error' => ['The id field is required.'
+            ]
+        ]));
+        };
+
         try {
             $stmt = $this->db->prepare("DELETE FROM Product WHERE id = ?");
             $stmt->execute([$id]);

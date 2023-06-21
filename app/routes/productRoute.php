@@ -28,6 +28,11 @@ if ($method === 'GET' && $uri_request === 'product') {
     }
     $result = $productController->getAllProducts();
     return json_encode($result);
+}else if ($method === 'GET' && $uri_request === 'product_info') {
+    $requestBody = $_GET;
+    $data = $requestBody;
+    $result = $productController->getAllProductInfo();
+    return json_encode($result);
 }elseif ($method === 'POST' && $uri_request === 'product') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');

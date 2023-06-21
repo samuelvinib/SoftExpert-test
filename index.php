@@ -15,8 +15,10 @@ $routes = [];
 
 $routes = [
     'api/register' => 'app/routes/userRoute.php',
+    'uploads' => 'app/routes/imageRoute.php',
     'api/login' => 'app/routes/userRoute.php',
     'api/product' => 'app/routes/productRoute.php',
+    'api/product_info' => 'app/routes/productRoute.php',
     'api/product_tax' => 'app/routes/productTaxRoute.php',
     'api/product_type' => 'app/routes/productTypeRoute.php',
     'api/sale' => 'app/routes/saleRoute.php',

@@ -38,20 +38,12 @@ class Migrations
       $sqlProduct = "CREATE TABLE Product (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255),
+        image_path VARCHAR(255),
         price DECIMAL(10, 2),
         type_product_id INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (type_product_id) REFERENCES ProductType(id)
-    );";
-
-      $sqlProductImage = "CREATE TABLE ProductImage (
-      id SERIAL PRIMARY KEY,
-      path VARCHAR(255),
-      product_id INT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (product_id) REFERENCES Product(id)
     );";
 
       $sqlProductTax = "CREATE TABLE ProductTax (
@@ -84,8 +76,8 @@ class Migrations
 
       $sqlCart = "CREATE TABLE Cart (
       id SERIAL PRIMARY KEY,
-      total_value DECIMAL(10, 2),
-      total_tax DECIMAL(10, 2),
+      total_value DECIMAL(10, 2) DEFAULT 0,
+      total_tax DECIMAL(10, 2) DEFAULT 0,
       user_id INT,
       completed_purchase BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -109,7 +101,6 @@ class Migrations
       $this->connection->exec($sqlProductType);
       $this->connection->exec($sqlProductTax);
       $this->connection->exec($sqlProduct);
-      $this->connection->exec($sqlProductImage );
       $this->connection->exec($sqlUsers);
       $this->connection->exec($sqlToken);
       $this->connection->exec($sqlCart);

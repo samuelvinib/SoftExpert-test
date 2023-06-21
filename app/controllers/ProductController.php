@@ -38,55 +38,82 @@ class ProductController
         return false;
     }
 
-    public function getAllProducts()
+    public function getAllProductInfo()
     {
         try {
-            $stmt = $this->db->prepare(" SELECT * FROM Product");
+            $stmt = $this->db->prepare("
+                SELECT
+                    p.id,
+                    p.name,
+                    p.price,
+                    p.type_product_id,
+                    p.created_at,
+                    p.updated_at,
+                    pt.id AS type_id,
+                    pt.name AS type_name,
+                    pt.created_at AS type_created_at,
+                    pt.updated_at AS type_updated_at,
+                    ptax.id AS tax_id,
+                    ptax.tax_percentage,
+                    ptax.created_at AS tax_created_at,
+                    ptax.updated_at AS tax_updated_at
+                FROM
+                    Product p
+                LEFT JOIN
+                    ProductType pt ON p.type_product_id = pt.id
+                LEFT JOIN
+                    ProductTax ptax ON pt.id = ptax.type_product_id
+            ");
             $stmt->execute();
             $productsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
             $products = [];
-
+    
             foreach ($productsData as $productData) {
-                $stmt = $this->db->prepare(" SELECT * FROM ProductType WHERE id = ?");
-                $stmt->execute([$productData['type_product_id']]);
-                $productsTypeData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($productsTypeData as $productTypeData) {
-                    $stmt = $this->db->prepare(" SELECT * FROM ProductTax WHERE id = ?");
-                    $stmt->execute([$productTypeData['id']]);
-                    $ProductsTax = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($ProductsTax as $ProductTax) {
                 $product = [
-                    'product' => [
-                        'id' => $productData['id'],
-                        'name' => $productData['name'],
-                        'price' => $productData['price'],
-                        'type_product_id' => $productData['type_product_id'],
-                        'created_at' => $productData['created_at'],
-                        'updated_at' => $productData['updated_at'],
-                        'type' => [
-                            'id' => $productTypeData['id'],
-                            'name' => $productTypeData['name'],
-                            'created_at' => $productTypeData['created_at'],
-                            'updated_at' => $productTypeData['updated_at']
-                        ],
-                        'tax' => [
-                            'id' => $ProductTax['id'],
-                            'percentage' => $ProductTax['tax_percentage'],
-                            'created_at' => $ProductTax['created_at'],
-                            'updated_at' => $ProductTax['updated_at']
-                        ]
-                    ]
+                    'id' => $productData['id'],
+                    'name' => $productData['name'],
+                    'price' => $productData['price'],
+                    'type_product_id' => $productData['type_product_id'],
+                    'created_at' => $productData['created_at'],
+                    'updated_at' => $productData['updated_at'],
+                    'type' => $productData['type_id'] ? [
+                        'id' => $productData['type_id'],
+                        'name' => $productData['type_name'],
+                        'created_at' => $productData['type_created_at'],
+                        'updated_at' => $productData['type_updated_at']
+                    ] : null,
+                    'tax' => $productData['tax_id'] ? [
+                        'id' => $productData['tax_id'],
+                        'percentage' => $productData['tax_percentage'],
+                        'created_at' => $productData['tax_created_at'],
+                        'updated_at' => $productData['tax_updated_at']
+                    ] : null
                 ];
-
+    
                 $products[] = $product;
-            }}
             }
-
+    
             echo json_encode($products);
         } catch (PDOException $e) {
             http_response_code(500);
             echo json_encode(["Error: " . $e->getMessage()]);
+        }
+    }
+    
+    
+
+    public function getAllProducts()
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM Product");
+            $stmt->execute();
+            $product = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            echo(json_encode($product));
+        } catch (PDOException $e) {
+            http_response_code(500);
+            exit(json_encode(["Error: " => $e->getMessage()]));
         }
     }
 

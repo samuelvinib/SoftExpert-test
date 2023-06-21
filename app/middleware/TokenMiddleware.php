@@ -27,10 +27,10 @@ class TokenMiddleware
             }
 
             http_response_code(401);
-            exit('Unauthorized access');
+            exit(json_encode(['message' => 'Unauthorized access.']));
         } catch (Exception $e) {
             http_response_code(500);
-            exit('Internal Server Error');
+            exit(json_encode(['message' => 'Internal Server Error.', 'error' => $e->getMessage()]));
         }
     }
 

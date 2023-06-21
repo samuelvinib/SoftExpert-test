@@ -12,6 +12,17 @@ class SaleController
     public function createSale($date, $total_value, $total_tax, $user_id)
     {
         try {
+            $stmt = $this->db->prepare("SELECT * FROM Cart WHERE $user_id = id ORDER BY id DESC LIMIT 1");
+            $stmt->execute([$date, $total_value, $total_tax, $user_id]);
+            exit(json_encode($stmt));
+            if ($stmt->rowCount() > 0) {
+                return true;
+            }
+        } catch (PDOException $e) {
+            echo "Error creating sale: " . $e->getMessage();
+        }
+
+        try {
             $stmt = $this->db->prepare("INSERT INTO Cart (total_value, total_tax, user_id) VALUES (?, ?, ?)");
             $stmt->execute([$date, $total_value, $total_tax, $user_id]);
 

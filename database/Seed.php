@@ -50,9 +50,9 @@ class Seed
     private function seedProduct()
     {
         $products = [
-            ['name' => 'amaciante', 'price' => 10.99, 'type_product_id' => 1],
-            ['name' => 'sabonete', 'price' => 2.99, 'type_product_id' => 2],
-            ['name' => 'detergente', 'price' => 5.99, 'type_product_id' => 1],
+            ['name' => 'amaciante', 'price' => 10.99, 'type_product_id' => 1, 'image_path' => 'uploads/amaciante_downy_concentrado_brisa_de_verao_1_5l_10015_1_d0d2b0b60248c45f81bd211c403b7130.webp'],
+            ['name' => 'sabonete', 'price' => 2.99, 'type_product_id' => 2 , 'image_path' => 'uploads/71U2Kfhht4L._AC_UF1000,1000_QL80_.jpg'],
+            ['name' => 'detergente', 'price' => 5.99, 'type_product_id' => 1 , 'image_path' => 'uploads/detergente_liquido_clear_ype_500ml_4773_1_d08d46a82a496cb0053b5c424727c41c.webp'],
         ];
 
         foreach ($products as $product) {

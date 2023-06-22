@@ -37,7 +37,7 @@ if ($method === 'GET' && $uri_request === 'product') {
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
-    $result = $productController->createProduct($data['name'], $data['price'], $data['type_product_id']);
+    $result = $productController->createProduct();
     return $result;
 }elseif ($method === 'PUT' && $uri_request === 'product') {
     $roleMiddleware->handleRequest();

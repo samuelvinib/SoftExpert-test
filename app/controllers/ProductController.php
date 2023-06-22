@@ -9,23 +9,37 @@ class ProductController
         $this->db = (new Database())->connect();
     }
 
-    public function createProduct($name, $price, $type_product_id)
+    public function createProduct()
     {
-
-        if(!$name || !$price || !$type_product_id){
+        $name = $_POST['name'];
+        $price = $_POST['price'];
+        $type_product_id = $_POST['type_product_id'];
+    
+        if (!$name || !$price || !$type_product_id) {
             http_response_code(422);
-            exit(json_encode(['message' => 'The given data was invalid.',
-            'error' => ['The name field is required.',
-            'The price field is required.',
-            'The type_product_id field is required.'
-            ]
-        ]));
-        };
-
+            exit(json_encode([
+                'message' => 'The given data was invalid.',
+                'error' => [
+                    'The name field is required.',
+                    'The price field is required.',
+                    'The type_product_id field is required.'
+                ]
+            ]));
+        }
+    
+        if (!empty($_FILES['image']['name'])) {
+            $imageName = md5(uniqid() . time()) . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $imageTmpName = $_FILES['image']['tmp_name'];
+            $imagePath = 'uploads/' . $imageName;
+            move_uploaded_file($imageTmpName, $imagePath);
+        } else {
+            $imageName = ''; // Se nenhum arquivo de imagem foi enviado, defina o nome como vazio
+        }
+    
         try {
-            $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $price, $type_product_id]);
-
+            $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id, image_path) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$name, $price, $type_product_id, $imageName]);
+    
             if ($stmt->rowCount() > 0) {
                 http_response_code(201);
                 echo (json_encode(['message' => 'New product created successfully.']));
@@ -34,7 +48,7 @@ class ProductController
             http_response_code(500);
             exit(json_encode(['message' => 'Failed to create a new product.', 'error' => $e->getMessage()]));
         }
-
+    
         return false;
     }
 

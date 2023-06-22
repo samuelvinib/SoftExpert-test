@@ -7,13 +7,10 @@ require_once './app/middleware/TokenMiddleware.php';
 require_once './app/middleware/AuthMiddleware.php';
 
 $authMiddleware = new AuthMiddleware();
-$authMiddleware->handleRequest();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri_request = explode('?',explode('/',$_SERVER['REQUEST_URI'])[2])[0];
 
-$tokenMiddleware = new TokenMiddleware();
-$userData = $tokenMiddleware->handleRequest();
 
 $roleMiddleware = new RoleAdminMiddleware();
 
@@ -34,18 +31,21 @@ if ($method === 'GET' && $uri_request === 'product') {
     $result = $productController->getAllProductInfo();
     return json_encode($result);
 }elseif ($method === 'POST' && $uri_request === 'product') {
+    $authMiddleware->handleRequest();
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     $result = $productController->createProduct();
     return $result;
 }elseif ($method === 'PUT' && $uri_request === 'product') {
+    $authMiddleware->handleRequest();
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);
     $result = $productController->updateProduct(($data['id']),$data['name'],$data['price'],$data['type_product_id']);
     return $result;
 }elseif ($method === 'DELETE' && $uri_request === 'product') {
+    $authMiddleware->handleRequest();
     $roleMiddleware->handleRequest();
     $requestBody = file_get_contents('php://input');
     $data = json_decode($requestBody, true);

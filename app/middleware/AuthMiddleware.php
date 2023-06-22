@@ -46,6 +46,6 @@ class AuthMiddleware
     private function sendUnauthorizedResponse($alert)
     {
         http_response_code(401);
-        exit(json_encode($alert));
+        exit(json_encode(['message' => $alert]));
     }
 }

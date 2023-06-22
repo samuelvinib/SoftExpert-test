@@ -38,7 +38,7 @@ class ProductController
     
         try {
             $stmt = $this->db->prepare("INSERT INTO Product (name, price, type_product_id, image_path) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $price, $type_product_id, $imageName]);
+            $stmt->execute([$name, $price, $type_product_id, $imagePath]);
     
             if ($stmt->rowCount() > 0) {
                 http_response_code(201);

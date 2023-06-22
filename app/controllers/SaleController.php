@@ -122,11 +122,17 @@ class SaleController
     public function getAllCarts($id)
     {
         try {
+            
             $stmt = $this->db->prepare("SELECT * FROM Cart WHERE user_id = ?");
             $stmt->execute([$id]);
-            $carts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return $carts;
+            $cart = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            $stmtSaleItem = $this->db->prepare("SELECT * FROM SaleItem WHERE cart_id = ?");
+            $stmtSaleItem->execute([$cart['id']]);
+            $saleItems = $stmtSaleItem->fetchAll(PDO::FETCH_ASSOC);
+            
+            $cart['sale_items'] = $saleItems;
+            return $cart;
         } catch (PDOException $e) {
             exit(json_encode(['message' => 'Error getting Cart', 'error' => $e->getMessage()]));
         }

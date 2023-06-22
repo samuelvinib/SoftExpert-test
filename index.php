@@ -14,6 +14,7 @@ $routes = [];
 
 
 $routes = [
+    '' => 'app/routes/webAppRoute.php',
     'api/register' => 'app/routes/userRoute.php',
     'uploads' => 'app/routes/imageRoute.php',
     'api/login' => 'app/routes/userRoute.php',
@@ -24,11 +25,19 @@ $routes = [
     'api/sale' => 'app/routes/saleRoute.php',
 ];
 
-if (array_key_exists($routePath, $routes)) {
+if ($routePath === false) {
+
+    $matchedRoute = 'app/routes/webAppRoute.php';
+    header('Content-Type: text/html');
+} elseif (array_key_exists($routePath, $routes)) {
+
+    $matchedRoute = $routes[$routePath];
     header('Content-Type: application/json');
-    include BASE_PATH . '/' . $routes[$routePath];
 } else {
     header('Content-Type: application/json');
     http_response_code(404);
     echo json_encode(['error' => 'Route not found']);
+    exit;
 }
+
+include BASE_PATH . '/' . $matchedRoute;

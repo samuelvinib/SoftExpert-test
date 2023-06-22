@@ -33,7 +33,7 @@ class ProductController
             $imagePath = 'uploads/' . $imageName;
             move_uploaded_file($imageTmpName, $imagePath);
         } else {
-            $imageName = ''; // Se nenhum arquivo de imagem foi enviado, defina o nome como vazio
+            exit(json_encode(['message' => 'could not save image']));
         }
     
         try {

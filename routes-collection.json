@@ -1,17 +1,17 @@
 {
 	"info": {
 		"_postman_id": "414a2ce6-bfe7-4fb0-b03d-a6f600a726c0",
-		"name": "php-test",
+		"name": "Market api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25667608",
-		"_collection_link": "https://winter-equinox-792396.postman.co/workspace/2f7e2253-02f3-4f92-8b24-71e79f9ce275/collection/25667608-414a2ce6-bfe7-4fb0-b03d-a6f600a726c0?action=share&creator=25667608&source=collection_link"
+		"_collection_link": "https://winter-equinox-792396.postman.co/workspace/Team-Workspace~2f7e2253-02f3-4f92-8b24-71e79f9ce275/collection/25667608-414a2ce6-bfe7-4fb0-b03d-a6f600a726c0?action=share&creator=25667608&source=collection_link"
 	},
 	"item": [
 		{
 			"name": "User",
 			"item": [
 				{
-					"name": "http://localhost:8080/api/register",
+					"name": "Register user",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"jacó\",\r\n    \"password\":\"12345678\",\r\n    \"email\":\"testa@test.com\"\r\n}",
+							"raw": "{\r\n    \"name\":\"jacó\",\r\n    \"password\":\"12345678\",\r\n    \"emaial\":\"testa@test.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,7 +51,53 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/login",
+					"name": "login as user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODcxMDQxODl9.6-OuY-Rip9RgCEll5pFVWk7-VW6eUtjWo_c7IRPVcSw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"test123\",\r\n    \"email\":\"test@teste.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login as admin",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -125,7 +171,7 @@
 			"name": "Product Type",
 			"item": [
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "get all products type",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -144,13 +190,8 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"mode": "formdata",
+							"formdata": []
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/product_type",
@@ -175,7 +216,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "create a new product type",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -215,7 +256,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "edit a product type",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -255,7 +296,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "delete a product type",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -300,7 +341,50 @@
 			"name": "Product",
 			"item": [
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "get all products info",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/product_info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"product_info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all products",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -350,7 +434,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "create a new product",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -367,7 +451,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"amacianto\",\r\n    \"price\": \"10.99\",\r\n    \"type_product_id\": 1\r\n}",
+							"raw": "{\r\n    \"name\": \"amaciante\",\r\n    \"price\": \"10.99\",\r\n    \"type_product_id\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -390,7 +474,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "edit a product",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -430,7 +514,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "delete a product",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -447,7 +531,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 5\r\n}",
+							"raw": "{\r\n    \"id\": 6\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -475,7 +559,7 @@
 			"name": "Product Tax",
 			"item": [
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "get all products tax",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -525,7 +609,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "create a new product tax",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -542,7 +626,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tax_percentage\": \"10.99\",\r\n    \"type_product_id\": 1\r\n}",
+							"raw": "{\r\n    \"tax_percentage\": \"10.99\",\r\n    \"type_product_id\": 5\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -565,7 +649,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "edit a product tax",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -605,7 +689,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "delete a product tax",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -622,7 +706,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 5\r\n}",
+							"raw": "{\r\n    \"id\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -650,7 +734,7 @@
 			"name": "Cart",
 			"item": [
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "get all carts from user",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -678,7 +762,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/sale",
+							"raw": "http://localhost:8080/api/cart",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -686,7 +770,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"sale"
+								"cart"
 							],
 							"query": [
 								{
@@ -700,7 +784,57 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:8080/api/products",
+					"name": "get last cart",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/open_cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"open_cart"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create and add items in user's Cart",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -717,7 +851,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"date\": \"10.99\",\r\n    \"total_value\": 1,\r\n    \"total_tax\": 1,\r\n    \"user_id\": 1\r\n}",
+							"raw": "{\r\n    \"id\": 3,\r\n    \"name\": \"detergente\",\r\n    \"price\": \"5.99\",\r\n    \"quantity\": 6,\r\n    \"image_path\": \"uploads/detergente_liquido_clear_ype_500ml_4773_1_d08d46a82a496cb0053b5c424727c41c.webp\",\r\n    \"type_product_id\": 1,\r\n    \"created_at\": \"2023-06-21 22:33:56.066034\",\r\n    \"updated_at\": \"2023-06-21 22:33:56.066034\",\r\n    \"type\": {\r\n        \"id\": 1,\r\n        \"name\": \"limpeza\",\r\n        \"created_at\": \"2023-06-21 22:33:37.778389\",\r\n        \"updated_at\": \"2023-06-21 22:33:37.778389\"\r\n    },\r\n    \"tax\": {\r\n        \"id\": 1,\r\n        \"percentage\": \"4.00\",\r\n        \"created_at\": \"2023-06-21 22:33:56.075025\",\r\n        \"updated_at\": \"2023-06-21 22:33:56.075025\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -725,7 +859,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/sale",
+							"raw": "http://localhost:8080/api/add_cart",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -733,7 +867,54 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"sale"
+								"add_cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "complete purchase",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/checkout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"checkout"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -747,7 +928,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2ODcxMzkzMTd9.rrHhysfo2UN6NTczRY-jA8HOy3QTG26vtNfjjZ9aaD4",
+				"value": "",
 				"type": "string"
 			}
 		]

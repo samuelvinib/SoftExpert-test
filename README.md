@@ -77,17 +77,13 @@
 
 ## Acessos
 #
-> - logar como admin:
-<br>
-> email: adm@test.com
-<br>
+> - logar como admin: <br>
+> email: adm@test.com <br>
 > password: adm1234
 
 #
 
-> - logar como user:
-<br>
-> email: test@teste.com
-<br>
+> - logar como user: <br>
+> email: test@teste.com <br>
 > password: test123
 #

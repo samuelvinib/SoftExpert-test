@@ -1,0 +1,23 @@
+{
+  "short_name": "Stinson Style",
+  "name": "Stinson Style - Dress up awesome",
+  "icons": [
+    {
+      "src": "http://localhost:8080/uploads/logo.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "http://localhost:8080/uploads/logo.png",
+      "type": "image/png"
+    },
+    {
+      "src": "http://localhost:8080/uploads/logo.png",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1F3447",
+  "background_color": "#6CFCDB4"
+}

@@ -26,14 +26,19 @@ class ProductTypeController
         try {
             $stmt = $this->db->prepare("INSERT INTO ProductType (name) VALUES (?)");
             $stmt->execute([$name]);
-
-            if ($stmt->rowCount() > 0) {
+            $productTypeId = $this->db->lastInsertId();
+        
+            if ($productTypeId) {
+                $stmt = $this->db->prepare("SELECT * FROM ProductType WHERE id = ?");
+                $stmt->execute([$productTypeId]);
+                $productType = $stmt->fetch(PDO::FETCH_ASSOC);
+        
                 http_response_code(201);
-                exit(json_encode(['message' => 'New product type created successfully.']));
+                exit(json_encode(['message' => 'New product type created successfully.', 'data' => $productType]));
             }
         } catch (PDOException $e) {
             http_response_code(500);
-            exit(json_encode(['message' => "Error creating a new product type.",'error' => $e->getMessage()]));
+            exit(json_encode(['message' => "Error creating a new product type.", 'error' => $e->getMessage()]));
         }
         
         http_response_code(400);

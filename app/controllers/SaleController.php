@@ -50,6 +50,9 @@ class SaleController
                 $stmt = $this->db->prepare("UPDATE Cart SET completed_purchase = ? WHERE id = ?");
                 $stmt->execute([true,$lastCart['id']]);
 
+                $stmtCart = $this->db->prepare("INSERT INTO Cart (user_id) VALUES (?)");
+                $stmtCart->execute([$id]);
+
                 if ($stmt->rowCount() > 0) {
                     exit(json_encode(['message' => 'completed purchase!']));
                 } else {
@@ -122,17 +125,11 @@ class SaleController
     public function getAllCarts($id)
     {
         try {
-            
             $stmt = $this->db->prepare("SELECT * FROM Cart WHERE user_id = ?");
             $stmt->execute([$id]);
-            $cart = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            $stmtSaleItem = $this->db->prepare("SELECT * FROM SaleItem WHERE cart_id = ?");
-            $stmtSaleItem->execute([$cart['id']]);
-            $saleItems = $stmtSaleItem->fetchAll(PDO::FETCH_ASSOC);
-            
-            $cart['sale_items'] = $saleItems;
-            return $cart;
+            $carts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $carts;
         } catch (PDOException $e) {
             exit(json_encode(['message' => 'Error getting Cart', 'error' => $e->getMessage()]));
         }
@@ -141,19 +138,44 @@ class SaleController
     public function getLastCart($id)
     {
         try {
-            
             $stmt = $this->db->prepare("SELECT * FROM Cart WHERE user_id = ? ORDER BY id DESC LIMIT 1");
             $stmt->execute([$id]);
             $cart = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            $stmtSaleItem = $this->db->prepare("SELECT * FROM SaleItem WHERE cart_id = ?");
-            $stmtSaleItem->execute([$cart['id']]);
-            $saleItems = $stmtSaleItem->fetchAll(PDO::FETCH_ASSOC);
-            
-            $cart['sale_items'] = $saleItems;
+        
+            $stmtSaleItems = $this->db->prepare("SELECT si.*, p.* FROM SaleItem si
+                JOIN Product p ON si.product_id = p.id
+                WHERE si.cart_id = ?");
+            $stmtSaleItems->execute([$cart['id']]);
+            $saleItems = $stmtSaleItems->fetchAll(PDO::FETCH_ASSOC);
+        
+            $cart['sale_items'] = [];
+        
+            foreach ($saleItems as $saleItem) {
+                $product = [
+                    'id' => $saleItem['product_id'],
+                    'name' => $saleItem['name'],
+                    'image_path' => $saleItem['image_path'],
+                    'price' => $saleItem['price'],
+                    // Adicione outros detalhes do produto conforme necessário
+                ];
+        
+                $cart['sale_items'][] = [
+                    'id' => $saleItem['id'],
+                    'cart_id' => $saleItem['cart_id'],
+                    'product_id' => $saleItem['product_id'],
+                    'quantity' => $saleItem['quantity'],
+                    'item_total_value' => $saleItem['item_total_value'],
+                    'tax_amount' => $saleItem['tax_amount'],
+                    'created_at' => $saleItem['created_at'],
+                    'updated_at' => $saleItem['updated_at'],
+                    'product' => $product,
+                ];
+            }
+        
             return $cart;
         } catch (PDOException $e) {
             exit(json_encode(['message' => 'Error getting Cart', 'error' => $e->getMessage()]));
         }
+        
     }
 }

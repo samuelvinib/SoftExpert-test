@@ -1,6 +1,4 @@
-# Teste SoftExpert
-
-<img src="https://cdn2.softexpert.com/wp-content/uploads/2021/03/logo-home.png" width="250" style=" display: block;margin-left: auto;margin-right: auto;">
+# Teste Fullstack developer
 
 # Descrição
 
@@ -12,7 +10,6 @@
 > ## Projeto Frontend - Interface do mercado
 > Descrição: O projeto consiste em um frontend desenvolvido em React que se integra a um sistema de backend em PHP para gerenciar produtos e vendas. O frontend permite o cadastro de produtos, tipos de produtos e valores percentuais de imposto. Também oferece uma tela de venda onde é possível registrar produtos adquiridos, calcular valores e impostos, e exibir totalizadores. As transações são enviadas ao backend para serem armazenadas no banco de dados.
 >
-> ### Empresa: SoftExpert
 >#
 >
 > ## Tecnologias utilizadas no projeto:
